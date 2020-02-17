@@ -36,33 +36,11 @@
     url: "{{ docker__yum_repository }}"
     dest: /etc/yum.repos.d/docker.repo
 
-- name: RedHat | Disable pinned Docker version
-  command: yum versionlock delete docker-{{ docker__edition }}
-  when: not docker__version | d()
-  register: versionlock_result
-  failed_when: versionlock_result.rc != 0 
-  changed_when: >
-    versionlock_result.rc == 0 and ("versionlock deleted: 1" in versionlock_result.stderr)
-    
-- name: RedHat | Enable pinned Docker version
-  command: yum versionlock add docker-{{ docker__edition }}-{{ docker__yum_version }}
-  when: docker__yum_version | d()
-  register: versionlock_result
-  failed_when: versionlock_result.rc != 0 
-  changed_when: >
-    versionlock_result.rc == 0 and ("versionlock added: 1" in versionlock_result.stderr)    
-
-- name: RedHat | Enable pinned Docker cli version
-  command: yum versionlock add docker-{{ docker__edition }}-cli-{{ docker__yum_version }}
-  when: docker__yum_version | d()
-  register: versionlock_result
-  failed_when: versionlock_result.rc != 0 
-  changed_when: >
-    versionlock_result.rc == 0 and ("versionlock added: 1" in versionlock_result.stderr)    
-
 - name: RedHat | Install Docker
   yum:
-    name: "docker-{{ docker__edition }}"
+    name:
+      - "docker-{{ docker__edition }}-{{ docker__yum_version }}"
+      - "docker-{{ docker__edition }}-cli-{{ docker__yum_version }}"
     state: "{{ docker__state }}"
     
 
