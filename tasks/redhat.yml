@@ -5,9 +5,14 @@
     name:  yum-versionlock
     state: present
 
+- name: RedHat | Install epel repo
+  yum:
+    name: epel-release
+
 - name: RedHat | Install Docker's dependencies
   yum:
     name: "{{ docker__yum_package_dependencies + docker__yum_pip_dependencies }}"
+
 
 - name: RedHat | install pip and force upgrade
   pip:
