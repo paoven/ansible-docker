@@ -4,7 +4,11 @@
   become: true
 
   vars:
+    #ansible_python_interpreter: "/usr/bin/python3"
+
     docker__version: "5:18.09.7"
+
+    docker__yum_version: "18.09.7"
 
     docker__users: ["test"]
 
@@ -35,7 +39,14 @@
         name: "test"
         shell: "/bin/bash"
 
-    - name: Run the equivalent of "apt-get update"
+    - name: Debian | Run the equivalent of "apt-get update"
       apt:
         update_cache: true
       changed_when: false
+      when: ansible_os_family == 'Debian'
+
+    - name: RedHat | Run the equivalent of "yum update"
+      yum:
+        update_cache: true
+      changed_when: false
+      when: ansible_os_family == 'RedHat'
