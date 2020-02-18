@@ -2,6 +2,10 @@
 
 services: "docker"
 
+install:
+  - pip install --user ansible-lint==4.2.0
+  - ansible-lint --version
+
 env:
   - distro: "ubuntu1804"
   - distro: "debian9"
@@ -9,6 +13,9 @@ env:
   - distro: "centos7"
 
 script:
+  # Linting role
+  - ansible-lint . || travis_terminate 1;
+
   # Download test shim.
   - wget -O ${PWD}/tests/test.sh https://gist.githubusercontent.com/nickjj/d12353b5b601e33cd62fda111359957a/raw
   - chmod +x ${PWD}/tests/test.sh
