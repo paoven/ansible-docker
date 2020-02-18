@@ -3,7 +3,7 @@
 services: "docker"
 
 install:
-  - pip install ansible-lint==4.2.0
+  - pip install --user ansible-lint==4.2.0
   - ansible-lint --version
 
 env:
