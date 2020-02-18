@@ -16,9 +16,9 @@
 
 - name: RedHat | install pip and force upgrade
   pip:
-    name: pip
-    executable: pip3
-    state: latest
+    name: pip==20.0.2
+    #executable: pip3
+    state: present
 
 - name: RedHat | Install virtualenv via pip
   pip:
@@ -42,7 +42,6 @@
       - "docker-{{ docker__edition }}-{{ docker__yum_version }}"
       - "docker-{{ docker__edition }}-cli-{{ docker__yum_version }}"
     state: "{{ docker__state }}"
-    
 
 - name: RedHat | Install Python packages
   pip:
@@ -53,5 +52,5 @@
   loop: "{{ docker__default_pip_packages + docker__pip_packages }}"
   environment:
     PATH: "{{ ansible_env.PATH }}:/usr/local/bin/"
-  when: item.name | d()  
+  when: item.name | d()
 

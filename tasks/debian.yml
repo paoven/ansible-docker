@@ -41,5 +41,6 @@
     virtualenv: "{{ docker__pip_virtualenv }}"
     state: "{{ item.state | d('present') }}"
   loop: "{{ docker__default_pip_packages + docker__pip_packages }}"
-  when: item.name | d()    
+  when: item.name | d()
+
 
